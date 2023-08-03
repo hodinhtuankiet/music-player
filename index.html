@@ -56,45 +56,13 @@
 
         <!-- Playlist -->
         <div class="playlist">
-            <div class="song">
-                <div class="thumb"
-                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
-                </div>
-                <div class="body">
-                    <h3 class="title">Music name</h3>
-                    <p class="author">Singer</p>
-                </div>
-                <div class="option">
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-            <div class="song">
-                <div class="thumb"
-                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
-                </div>
-                <div class="body">
-                    <h3 class="title">Music name</h3>
-                    <p class="author">Singer</p>
-                </div>
-                <div class="option">
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
-            <div class="song">
-                <div class="thumb"
-                    style="background-image: url('https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg')">
-                </div>
-                <div class="body">
-                    <h3 class="title">Music name</h3>
-                    <p class="author">Singer</p>
-                </div>
-                <div class="option">
-                    <i class="fas fa-ellipsis-h"></i>
-                </div>
-            </div>
+            
         </div>
     </div>
     <script>
+        const $ = document.querySelector.bind(document);
+        const $$ = document.querySelectorAll.bind(document);
+
         const app = {
             songs: [
                 {
@@ -137,7 +105,7 @@
                     path:
                         "https://mp3.filmisongs.com/go.php?id=Damn%20Song%20Raftaar%20Ft%20KrSNa.mp3",
                     image:
-                        "https://filmisongs.xyz/wp-content/uploads/2020/07/Damn-Song-Raftaar-KrNa.jpg"
+                        "https://wompampsupport.azureedge.net/fetchimage?siteId=7575&v=2&jpgQuality=100&width=700&url=https%3A%2F%2Fi.kym-cdn.com%2Fentries%2Ficons%2Ffacebook%2F000%2F022%2F708%2F1000x1000-999.jpg"
                 },
                 {
                     name: "Feeling You",
@@ -146,8 +114,46 @@
                     image:
                         "https://a10.gaanacdn.com/gn_img/albums/YoEWlabzXB/oEWlj5gYKz/size_xxl_1586752323.webp"
                 }
-            ]
+                ,
+                {
+                    name: "Nơi Ta Sống",
+                    singer: "MCK",
+                    path: "https://mp3.vlcmusic.com/download.php?track_id=27145&format=320",
+                    image:
+                        "https://i1.sndcdn.com/artworks-97yWRfq45jRyjka5-yDgDsw-t500x500.jpg"
+                },
+                {
+                    name: "Only You",
+                    singer: "Raftaar x Harjas",
+                    path: "https://mp3.vlcmusic.com/download.php?track_id=27145&format=320",
+                    image:
+                        "https://i.ytimg.com/vi/D6R_HGs4qgw/maxresdefault.jpg"
+                }
+            ],
+            render: function () {
+                const htmls = this.songs.map(song => {
+                    return `
+                    <div class="song">
+                <div class="thumb"
+                    style="background-image: url('${song.image}')">
+                </div>
+                <div class="body">
+                    <h3 class="title">${song.name}</h3>
+                    <p class="author">${song.singer}</p>
+                </div>
+                <div class="option">
+                    <i class="fas fa-ellipsis-h"></i>
+                </div>
+            </div>  
+                    `
+                })
+            $('.playlist').innerHTML = htmls.join('');
+            },
+            start: function () {
+                this.render()
+            }
         }
+        app.start();
 
     </script>
 </body>
