@@ -149,7 +149,18 @@
                 })
             $('.playlist').innerHTML = htmls.join('');
             },
+            handleEvents: function(){
+                const cd = $('.cd')
+                const cdWidth = cd.offsetWidth
+                document.onscroll = function(){
+                const scrollTop = window.scrollY
+                const newcdWidth = cdWidth - scrollTop
+                cd.style.width = newcdWidth > 0 ? newcdWidth + 'px' : 0
+                cd.style.opacity = newcdWidth / cdWidth
+            } 
+            },
             start: function () {
+                this.handleEvents()
                 this.render()
             }
         }
