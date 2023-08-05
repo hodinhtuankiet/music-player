@@ -62,13 +62,20 @@
     <script>
         const $ = document.querySelector.bind(document);
         const $$ = document.querySelectorAll.bind(document);
-
+        const player = $('.player')
+        const heading = $('header h2')
+        const cdThumb = $('.cd-thumb')
+        const audio = $('#audio')
+        const cd = $('.cd')
+        const playBtn = $('.btn-toggle-play')
         const app = {
+            currentIndex: 0,
+            isPalying: false,
             songs: [
                 {
                     name: "Click Pow Get Down",
                     singer: "Raftaar x Fortnite",
-                    path: "https://mp3.vlcmusic.com/download.php?track_id=34737&format=320",
+                    path: "https://mp3.filmisongs.com/go.php?id=Damn%20Song%20Raftaar%20Ft%20KrSNa.mp3",
                     image: "https://i.ytimg.com/vi/jTLhQf5KJSc/maxresdefault.jpg"
                 },
                 {
@@ -149,18 +156,55 @@
                 })
             $('.playlist').innerHTML = htmls.join('');
             },
+            defineProperties: function(){
+                Object.defineProperty(this,'currentSong',{
+                    get: function(){
+                        return this.songs[this.currentIndex]
+                    }
+                })
+            },
             handleEvents: function(){
-                const cd = $('.cd')
+
+                // handle zoom out / enlarge
                 const cdWidth = cd.offsetWidth
                 document.onscroll = function(){
-                const scrollTop = window.scrollY
-                const newcdWidth = cdWidth - scrollTop
-                cd.style.width = newcdWidth > 0 ? newcdWidth + 'px' : 0
-                cd.style.opacity = newcdWidth / cdWidth
+                    const scrollTop = window.scrollY
+                    const newcdWidth = cdWidth - scrollTop
+                    cd.style.width = newcdWidth > 0 ? newcdWidth + 'px' : 0
+                    cd.style.opacity = newcdWidth / cdWidth 
+                // handle when click play music
+                playBtn.onclick = function(){
+                    if(app.isPalying){
+                        app.isPalying = false
+                        audio.pause()
+                        player.classList.remove('playing')
+                    }else{
+                        app.isPalying = true
+                        audio.play()
+                        player.classList.add('playing')
+                    }
+                }
             } 
             },
+            loadCurrentSong: function(){
+                const heading = $('header h2')
+                const cdThumb = $('.cd-thumb')
+                const audio = $('#audio')
+
+                heading.textContent = this.currentSong.name;
+                cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
+                audio.src = this.currentSong.path;
+                console.log(heading,cdThumb,audio)
+            },
             start: function () {
+                // define properties for object 
+                this.defineProperties()
+
+                // handle event  
                 this.handleEvents()
+                // download first song in ui when run application 
+                this.loadCurrentSong()
+
                 this.render()
             }
         }
@@ -170,5 +214,3 @@
 </body>
 
 </html>
-
-<!-- Design from: https://static.collectui.com/shots/3671744/musicloud-revolutionary-app-for-music-streaming-large -->
