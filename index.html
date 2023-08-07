@@ -68,6 +68,7 @@
         const audio = $('#audio')
         const cd = $('.cd')
         const playBtn = $('.btn-toggle-play')
+        const progress = $('#progress')
         const app = {
             currentIndex: 0,
             isPalying: false,
@@ -164,6 +165,14 @@
                 })
             },
             handleEvents: function(){
+                // handle cd rotate 
+                const cdAnimate = cdThumb.animate([
+                    {transform : 'rotate(360deg)'}
+                ],{
+                    duration: 10000, //10 seconds
+                    interations: Infinity
+                })
+                cdAnimate.pause()
 
                 // handle zoom out / enlarge
                 const cdWidth = cd.offsetWidth
@@ -175,15 +184,33 @@
                 // handle when click play music
                 playBtn.onclick = function(){
                     if(app.isPalying){
-                        app.isPalying = false
                         audio.pause()
-                        player.classList.remove('playing')
                     }else{
-                        app.isPalying = true
                         audio.play()
-                        player.classList.add('playing')
                     }
                 }
+                audio.onplay = function(){
+                    cdAnimate.play()
+                    app.isPalying = true
+                    player.classList.add('playing')
+                }
+                audio.onpause = function(){
+                    cdAnimate.pause()
+                    app.isPalying = false
+                    player.classList.remove('playing')
+                }
+                audio.ontimeupdate = function(){
+                    if(audio.duration){
+                        const progressPercent = Math.floor(audio.currentTime / audio.duration * 100)
+                        progress.value = progressPercent
+                    }
+                }
+                // handle when rewinding songs
+                progress.onchange = function(e){
+                    const seekTime =  audio.duration /100 * e.target.value 
+                    audio.currentTime = seekTime
+                }
+
             } 
             },
             loadCurrentSong: function(){
