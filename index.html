@@ -51,7 +51,9 @@
 
             <input id="progress" class="progress" type="range" value="0" step="1" min="0" max="100">
 
-            <audio id="audio" src=""></audio>
+            <audio id="audio" src="">
+                <source src="" type="audio/mpeg">
+            </audio>
         </div>
 
         <!-- Playlist -->
@@ -69,6 +71,8 @@
         const cd = $('.cd')
         const playBtn = $('.btn-toggle-play')
         const progress = $('#progress')
+        const nextNext = $('.btn-next')
+        const nextPrev = $('.btn-prev')
         const app = {
             currentIndex: 0,
             isPalying: false,
@@ -82,8 +86,8 @@
                 {
                     name: "Tu Phir Se Aana",
                     singer: "Raftaar x Salim Merchant x Karma",
-                    path: "https://mp3.vlcmusic.com/download.php?track_id=34213&format=320",
-                    image:
+                    path: "https://mp3.filmisongs.com/go.php?id=Damn%20Song%20Raftaar%20Ft%20KrSNa.mp3",
+                    image: 
                         "https://1.bp.blogspot.com/-kX21dGUuTdM/X85ij1SBeEI/AAAAAAAAKK4/feboCtDKkls19cZw3glZWRdJ6J8alCm-gCNcBGAsYHQ/s16000/Tu%2BAana%2BPhir%2BSe%2BRap%2BSong%2BLyrics%2BBy%2BRaftaar.jpg"
                 },
                 {
@@ -210,9 +214,14 @@
                     const seekTime =  audio.duration /100 * e.target.value 
                     audio.currentTime = seekTime
                 }
+                // when next song
+                nextNext.onclick = function(){
+                    app.nextSong()
+                }
 
             } 
             },
+            
             loadCurrentSong: function(){
                 const heading = $('header h2')
                 const cdThumb = $('.cd-thumb')
@@ -222,6 +231,14 @@
                 cdThumb.style.backgroundImage = `url('${this.currentSong.image}')`;
                 audio.src = this.currentSong.path;
                 console.log(heading,cdThumb,audio)
+            },
+            nextSong: function(){
+                this.currentIndex++
+                if(this.currentIndex >= this.songs.length)
+                {
+                    this.currentSong = 0
+                }
+                this.loadCurrentSong()
             },
             start: function () {
                 // define properties for object 
